@@ -1,75 +1,74 @@
-import React from 'react';
+import { useState } from 'react'
 import {
-  StyleSheet,
   Button,
-  View,
-  SafeAreaView,
+  StyleSheet,
   Text,
-  Alert,
+  TextInput, 
+  View 
 } from 'react-native';
 
-const Separator = () => <View style={styles.separator} />;
-
-const App = () => (
-  <SafeAreaView style={styles.container}>
-    <View>
-      <Text style={styles.title}>
-        The title and onPress handler are required. It is recommended to set
-        accessibilityLabel to help make your app usable by everyone.
-      </Text>
-      <Button
-        title="Press me"
-        onPress={() => Alert.alert('Simple Button pressed')}
-      />
+export default function App() {
+  const [lembrete, setLembrete] = useState('')
+  const [lembretes, setLembretes] = useState([])
+  const capturarLembrete = (lembreteDigitado) => {
+    setLembrete(lembreteDigitado)
+  }
+  const adicionarLembrete = () => {
+    setLembretes(lembretes => {
+      const aux = [lembrete, ...lembretes] //spread
+      setLembrete('')
+      return aux
+    })
+  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.lembreteView}>
+        <TextInput 
+          style={styles.lembreteTextInput}
+          placeholder='Desejo lembrar...'
+          onChangeText={capturarLembrete}
+          value={lembrete} 
+        />
+        <Button 
+          title="OK"
+          onPress={adicionarLembrete}
+        />
+      </View>
+      <View>
+          {/* [Comprar um abacate, ir ao cinema] => [<View><Text>Comprar um abacate</Text></View>, <View><Text>Ir ao cinema</Text></View>] */}
+          {
+            lembretes.map((l) => (
+              <View style={styles.itemNaLista}><Text>{l}</Text></View>
+            ))
+          }
+      </View>
     </View>
-    <Separator />
-    <View>
-      <Text style={styles.title}>
-        Adjust the color in a way that looks standard on each platform. On iOS,
-        the color prop controls the color of the text. On Android, the color
-        adjusts the background color of the button.
-      </Text>
-      <Button
-        title="Press me"
-        color="#f194ff"
-        onPress={() => Alert.alert('Button with adjusted color pressed')}
-      />
-    </View>
-    <Separator />
-    <View>
-      <Text style={styles.title}>
-        All interaction for the component are disabled.
-      </Text>
-      <Button
-        title="Press me"
-        disabled
-        onPress={() => Alert.alert('Cannot press this one')}
-      />
-    </View>
-    <Separator />
-    
-  </SafeAreaView>
-);
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16,
+    padding: 40,
+    width: '100%'
   },
-  title: {
+  lembreteView: {
+    marginBottom: 4
+  },
+  lembreteTextInput: {
+    borderBottomColor: '#CCC',
+    borderBottomWidth: 1,
+    padding: 12,
     textAlign: 'center',
-    marginVertical: 8,
+    outlineStyle: 'none',
+    marginBottom: 4
   },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-});
-
-export default App;
+  itemNaLista: {
+    padding: 12,
+    borderColor: '#AAA',
+    borderWidth: 1,
+    backgroundColor: '#DDD',
+    marginBottom: 4,
+    textAlign: 'center',
+    borderRadius: 4  
+  }
+})
