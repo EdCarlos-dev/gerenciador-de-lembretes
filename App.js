@@ -25,12 +25,12 @@ export default function App() {
       <View style={styles.lembreteView}>
         <TextInput 
           style={styles.lembreteTextInput}
-          placeholder='Desejo lembrar...'
+          placeholder='Lembre-me'
           onChangeText={capturarLembrete}
           value={lembrete} 
         />
         <Button 
-          title="OK"
+          title="Carregar"
           onPress={adicionarLembrete}
         />
       </View>
